@@ -1,7 +1,7 @@
-﻿@model IEnumerable<personapi_dotnet.Models.Entities.Telefono>
+@model IEnumerable<personapi_dotnet.Models.Entities.Telefono>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "TELEFONOS";
 }
 
 <h1>Index</h1>
@@ -12,6 +12,9 @@
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Num)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Oper)
             </th>
@@ -24,6 +27,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Num)
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Oper)
             </td>
