@@ -1,4 +1,10 @@
+using Microsoft.EntityFrameworkCore;
+using personapi_dotnet.Models.Entities;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<PersonDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ConexionBD")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
