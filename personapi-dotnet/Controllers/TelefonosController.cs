@@ -160,4 +160,96 @@ namespace personapi_dotnet.Controllers
             return _context.Telefonos.Any(e => e.Num == id);
         }
     }
+
+    // Se realizan los siguientes controladores para la documentación en Swagger y demostrar su funcionamiento.
+    // Puesto a que Swagger no está diseñado para documentar controladores MVC que devuelven vistas.
+    // Sin embargo, se usan los controladores MVC en la ejecución del proyecto.
+
+    [ApiController]
+    [Route("api/[controller]")]
+    public class TelefonosApiController : ControllerBase
+    {
+        private readonly PersonDbContext _context;
+
+        public TelefonosApiController(PersonDbContext context)
+        {
+            _context = context;
+        }
+
+        // GET: api/Telefonos
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Telefono>>> GetTelefonos()
+        {
+            return await _context.Telefonos.Include(t => t.DuenioNavigation).ToListAsync();
+        }
+
+        // GET: api/Telefonos/5
+        [HttpGet("{num}")]
+        public async Task<ActionResult<Telefono>> GetTelefono(string num)
+        {
+            var telefono = await _context.Telefonos
+                .Include(t => t.DuenioNavigation)
+                .FirstOrDefaultAsync(m => m.Num == num);
+            if (telefono == null)
+            {
+                return NotFound();
+            }
+            return telefono;
+        }
+
+        // POST: api/Telefonos
+        [HttpPost]
+        public async Task<ActionResult<Telefono>> PostTelefono(Telefono telefono)
+        {
+            _context.Telefonos.Add(telefono);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction("GetTelefono", new { num = telefono.Num }, telefono);
+        }
+
+        // PUT: api/Telefonos/5
+        [HttpPut("{num}")]
+        public async Task<IActionResult> PutTelefono(string num, Telefono telefono)
+        {
+            if (num != telefono.Num)
+            {
+                return BadRequest();
+            }
+            _context.Entry(telefono).State = EntityState.Modified;
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TelefonoExists(num))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return NoContent();
+        }
+
+        // DELETE: api/Telefonos/5
+        [HttpDelete("{num}")]
+        public async Task<IActionResult> DeleteTelefono(string num)
+        {
+            var telefono = await _context.Telefonos.FindAsync(num);
+            if (telefono == null)
+            {
+                return NotFound();
+            }
+            _context.Telefonos.Remove(telefono);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        private bool TelefonoExists(string num)
+        {
+            return _context.Telefonos.Any(e => e.Num == num);
+        }
+    }
 }

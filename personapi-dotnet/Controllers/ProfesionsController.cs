@@ -160,4 +160,94 @@ namespace personapi_dotnet.Controllers
             return _context.Profesions.Any(e => e.Id == id);
         }
     }
+
+    // Se realizan los siguientes controladores para la documentación en Swagger y demostrar su funcionamiento.
+    // Puesto a que Swagger no está diseñado para documentar controladores MVC que devuelven vistas.
+    // Sin embargo, se usan los controladores MVC en la ejecución del proyecto.
+
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ProfesionsApiController : ControllerBase
+    {
+        private readonly PersonDbContext _context;
+
+        public ProfesionsApiController(PersonDbContext context)
+        {
+            _context = context;
+        }
+
+        // GET: api/Profesions
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Profesion>>> GetProfesions()
+        {
+            return await _context.Profesions.ToListAsync();
+        }
+
+        // GET: api/Profesions/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Profesion>> GetProfesion(int id)
+        {
+            var profesion = await _context.Profesions.FindAsync(id);
+            if (profesion == null)
+            {
+                return NotFound();
+            }
+            return profesion;
+        }
+
+        // POST: api/Profesions
+        [HttpPost]
+        public async Task<ActionResult<Profesion>> PostProfesion(Profesion profesion)
+        {
+            _context.Profesions.Add(profesion);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction("GetProfesion", new { id = profesion.Id }, profesion);
+        }
+
+        // PUT: api/Profesions/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutProfesion(int id, Profesion profesion)
+        {
+            if (id != profesion.Id)
+            {
+                return BadRequest();
+            }
+            _context.Entry(profesion).State = EntityState.Modified;
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProfesionExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return NoContent();
+        }
+
+        // DELETE: api/Profesions/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProfesion(int id)
+        {
+            var profesion = await _context.Profesions.FindAsync(id);
+            if (profesion == null)
+            {
+                return NotFound();
+            }
+            _context.Profesions.Remove(profesion);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        private bool ProfesionExists(int id)
+        {
+            return _context.Profesions.Any(e => e.Id == id);
+        }
+    }
 }
