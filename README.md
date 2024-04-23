@@ -12,6 +12,41 @@ Este archivo proporciona una guía paso a paso sobre cómo se llevó a cabo el l
 - SQL Server 2019 Express en modo básico.
 - SQL Server Management Studio 18.
 
+
+IMPORTANTE:
+
+### Pasos para ejecutar el programa:
+
+1. **Ejecutar el DDL en SQL Server Management Studio:**
+   - Antes de comenzar, asegúrate de tener acceso a SQL Server Management Studio.
+   - Abre SQL Server Management Studio y ejecuta el script DDL proporcionado para configurar la base de datos.
+   
+2. **Clonar el repositorio en Visual Studio Community:**
+   - Abre Visual Studio Community.
+   - Clona el repositorio del proyecto desde GitHub u otra plataforma utilizando la opción de clonación de repositorios.
+   
+3. **Realizar cambios en los archivos mencionados:**
+   - Abre el proyecto clonado en Visual Studio Community.
+   - Realiza los siguientes cambios en los archivos mencionados:
+
+    a. **Archivo `appsettings.json`:**
+       - Abre el archivo `appsettings.json`.
+       - Busca la cadena de conexión que se encuentra bajo la clave `"ConexionBD"`.
+       - Modifica el valor de `"MARTINPC"` con la dirección del servidor de base de datos correspondiente.
+   
+    b. **Archivo `personDbContext.cs` dentro de las carpetas Models/Entities:**
+       - Navega hasta la carpeta Models/Entities en el proyecto.
+       - Abre el archivo `personDbContext.cs`.
+       - Busca la cadena de conexión y modifica el valor de `"MARTINPC"` con la dirección del servidor de base de datos correspondiente.
+
+   Nota: Asegúrate de cambiar solo el servidor en ambas cadenas de conexión, manteniendo el resto de la cadena sin modificar.
+
+Una vez completados estos pasos, el programa estará configurado correctamente para conectarse a la base de datos con el servidor especificado.
+Y listo, puedes correr el programa
+
+
+# Pasos seguidos para la realización del Laboratorio 1
+
 ## Paso 1: 
 
 1. Crear un repositorio público en GitHub con el nombre "personapi-dotnet" según las instrucciones y clonarlo en Visual Studio Community. Esto permitirá mantener un control de versiones del laboratorio.
